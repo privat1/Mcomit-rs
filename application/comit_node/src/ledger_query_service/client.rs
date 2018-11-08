@@ -56,7 +56,6 @@ impl DefaultLedgerQueryServiceApiClient {
                     .headers()
                     .get(LOCATION)
                     .ok_or_else(|| Error::MalformedResponse)
-                    //                    .ok_or_else(|| Error::MalformedResponse(format_err!("missing location")))
                     .and_then(|value| value.to_str().map_err(|_| Error::MalformedResponse))
                     .and_then(|location| Url::parse(location).map_err(|_| Error::MalformedResponse))
             }).map(QueryId::new);
