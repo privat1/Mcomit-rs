@@ -3,7 +3,7 @@ use rlp::{Encodable, RlpStream};
 use std::fmt;
 use tiny_keccak::keccak256;
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct UnsignedTransaction {
     pub nonce: U256,
     pub gas_price: U256,
@@ -13,6 +13,7 @@ pub struct UnsignedTransaction {
     pub data: Option<Bytes>,
 }
 
+#[derive(Clone)]
 struct Signature([u8; 64]);
 
 impl fmt::Debug for Signature {
@@ -21,7 +22,7 @@ impl fmt::Debug for Signature {
     }
 }
 
-#[derive(Debug)]
+#[derive(Debug, Clone)]
 pub struct SignedTransaction<'a> {
     unsigned_transaction: &'a UnsignedTransaction,
     v: u8,

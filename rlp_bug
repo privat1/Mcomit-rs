@@ -1,0 +1,8 @@
+#!/usr/bin/env bash
+
+for run in {1..1000};
+do
+    if ! test_output=$(/home/luckysori/.cargo/bin/cargo test test_random_rlp_bug --manifest-path /home/luckysori/work/rlp-bug-swap/application/comit_node/Cargo.toml -- --nocapture); then
+        echo ${test_output} >> "./rlp_fail_logs";
+    fi;
+done

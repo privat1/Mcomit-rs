@@ -64,7 +64,7 @@ pub fn erc20_harness<D: Docker>(
         new_account("63be4b0d638d44b5fee5b050ab0beeeae7b68cde3d829a3321f8009cdd76b992");
     let (_, bob) = new_account("f8218ebf6e2626bd1415c18321496e0c5725f0e1d774c7c2eab69f7650ad6e82");
 
-    let container = docker.run(ParityEthereum::default());
+    let container = docker.run(ParityEthereum::default().with_tag("v2.2.9"));
 
     let (event_loop, web3) = tc_web3_client::new(&container);
     let web3 = Arc::new(web3);

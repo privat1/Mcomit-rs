@@ -92,6 +92,13 @@ fn given_funded_erc20_htlc_when_redeemed_with_secret_then_tokens_are_transferred
 }
 
 #[test]
+fn test_random_rlp_bug() {
+    let docker = Cli::default();
+    erc20_harness(&docker, Erc20HarnessParams::default());
+}
+
+// RLP bug
+#[test]
 fn given_deployed_erc20_htlc_when_refunded_after_expiry_time_then_tokens_are_refunded() {
     let docker = Cli::default();
     let harness_params = Erc20HarnessParams::default();
@@ -198,6 +205,7 @@ fn given_not_enough_tokens_when_redeemed_token_balances_dont_change() {
     assert_eq!(client.get_contract_code(htlc_address), Bytes::default());
 }
 
+// RLP bug
 #[test]
 fn given_htlc_and_redeem_should_emit_redeem_log_msg() {
     let docker = Cli::default();
