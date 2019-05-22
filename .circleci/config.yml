@@ -6,7 +6,6 @@ jobs:
       image: ubuntu-1604:201903-01
       docker_layer_caching: true
     environment:
-      # TODO remove the variable definition from Makefile.toml once travis is retired
       RUST_TEST_THREADS: "8"
     steps:
       - checkout
@@ -41,7 +40,7 @@ jobs:
           name: Build using cargo make
           command: |
             cargo --version
-            cargo make travis
+            cargo make ci
       - save_cache:
           key: dependency-rs-sccache-{{ checksum "Cargo.lock" }}
           paths:

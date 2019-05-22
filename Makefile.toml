@@ -146,10 +146,9 @@ script = [
 '''
 ]
 
-[tasks.travis]
+[tasks.ci]
 workspace = false
-# Even though we only have 2 cores on Travis, we mostly wait for containers in our tests. Doing that in parallel saves us some time! (8 is just an arbitrary number!)
-env = { "RUST_TEST_THREADS" = "8", "RUSTC_WRAPPER" = "${HOME}/.cargo/bin/sccache"  }
+env = { "RUSTC_WRAPPER" = "${HOME}/.cargo/bin/sccache"  }
 run_task = "ci-flow"
 
 [tasks.clean-registry]
