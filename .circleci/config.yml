@@ -23,17 +23,17 @@ jobs:
           name: Check formatting
           command: cargo make check-rs-format
       - restore_cache:
-          key:
+          keys:
             # Find a cache corresponding to this specific Cargo.lock checksum
-            - dependency-rs-sccache-{{ checksum "Cargo.lock" }}
             # Find the most recently generated cache
+            - dependency-rs-sccache-{{ checksum "Cargo.lock" }}
             - dependency-rs-sccache-
       - restore_cache:
-          key:
+          keys:
             - dependency-rs-cache-{{ checksum "Cargo.lock" }}
             - dependency-rs-cache-
       - restore_cache:
-          key:
+          keys:
             - dependency-js-cache-{{ checksum "./api_tests/package.json" }}
             - dependency-js-cache-
       - run:
@@ -59,47 +59,47 @@ jobs:
 commands:
   setup_system:
     steps:
-       - run:
-           name:  "Setup system environment"
-           command: |
-             wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
-             curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
-             echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
-             sudo apt-get update
-             sudo apt-get install -y libzmq3-dev
+      - run:
+          name:  "Setup system environment"
+          command: |
+            wget -q -O - https://dl.google.com/linux/linux_signing_key.pub | sudo apt-key add -
+            curl -sL https://dl.yarnpkg.com/debian/pubkey.gpg | sudo apt-key add -
+            echo "deb https://dl.yarnpkg.com/debian/ stable main" | sudo tee /etc/apt/sources.list.d/yarn.list
+            sudo apt-get update
+            sudo apt-get install -y libzmq3-dev
   setup_nodejs:
     steps:
-       - run:
-           name:  "Install nodejs"
-           command: |
-             set +e
-             curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
-             export NVM_DIR="/opt/circleci/.nvm"
-             [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
-             nvm install v10.14.2
-             nvm alias default v10.14.2
+      - run:
+          name:  "Install nodejs"
+          command: |
+            set +e
+            curl -o- https://raw.githubusercontent.com/creationix/nvm/v0.33.5/install.sh | bash
+            export NVM_DIR="/opt/circleci/.nvm"
+            [ -s "$NVM_DIR/nvm.sh" ] && \. "$NVM_DIR/nvm.sh"
+            nvm install v10.14.2
+            nvm alias default v10.14.2
 
-             # Each step uses the same `$BASH_ENV`, so need to modify it
-             echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
-             echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
-             sudo apt-get install yarn
+            # Each step uses the same `$BASH_ENV`, so need to modify it
+            echo 'export NVM_DIR="/opt/circleci/.nvm"' >> $BASH_ENV
+            echo "[ -s \"$NVM_DIR/nvm.sh\" ] && . \"$NVM_DIR/nvm.sh\"" >> $BASH_ENV
+            sudo apt-get install yarn
   setup_rust:
     steps:
-       - run:
-           name:  "Setup rust environment"
-           command: |
-             curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain $(< rust-toolchain) && source $HOME/.cargo/env
-             which cargo-make || cargo install --debug cargo-make
+      - run:
+          name:  "Setup rust environment"
+          command: |
+            curl https://sh.rustup.rs -sSf | sh -s -- -y --default-toolchain $(< rust-toolchain) && source $HOME/.cargo/env
+            which cargo-make || cargo install --debug cargo-make
   print_current_versions:
     steps:
       - run:
           name: "Prints version for rust, etc"
           command: |
-             echo 'node --version' $(node --version)
-             echo 'yarn --version' $(yarn --version)
-             echo 'rustc --version' $(rustc --version)
-             echo 'cargo --version' $(cargo --version)
-             echo "pwd $(pwd)"
-             echo "whomai $(whoami)"
-             echo "CARGO_HOME" $CARGO_HOME
-             echo "RUSTUP_HOME" $RUSTUP_HOME
+            echo 'node --version' $(node --version)
+            echo 'yarn --version' $(yarn --version)
+            echo 'rustc --version' $(rustc --version)
+            echo 'cargo --version' $(cargo --version)
+            echo "pwd $(pwd)"
+            echo "whomai $(whoami)"
+            echo "CARGO_HOME" $CARGO_HOME
+            echo "RUSTUP_HOME" $RUSTUP_HOME
